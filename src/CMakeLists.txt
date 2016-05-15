@@ -1,6 +1,10 @@
-project(image-crypto-cxx)
+project(image-crypto-cxx CXX)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+if( CMAKE_COMPILER_IS_GNUCXX )
+    add_definitions( -std=c++11 )
+endif()
 
 set(HEADERS
     Block.hpp
@@ -8,11 +12,16 @@ set(HEADERS
 )
 
 set(SOURCES
-    main.cpp
+    Block.cpp
     FakeCrypto.cpp
 )
 
-add_executable(image-crypto-cxx
+add_library(crypto
     ${HEADERS}
     ${SOURCES}
 )
+
+add_executable(randomecb
+    randomecb.cpp
+)
+target_link_libraries(randomecb crypto)

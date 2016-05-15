@@ -17,6 +17,7 @@ private:
     const std::size_t mBlockSize;
     
     std::map<CharBlock, CharBlock> mDictionary;
+    CharBlock findOrEncryptBlock(const CharBlock& block);
 };
 
 #endif // _FakeCrypto_hpp_
