@@ -14,10 +14,12 @@ public:
 
     virtual std::size_t initialize() override;
     virtual CharBlock encrypt(const CharBlock& block) override;
+    virtual void outputStats(std::ostream& out) override;
 
 private:
     const std::size_t mBlockSize;
     std::map<CharBlock, CharBlock> mDictionary;
+    std::size_t mTotalBlocks;
 };
 
 #endif // _FakeCipher_hpp_

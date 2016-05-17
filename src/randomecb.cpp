@@ -7,6 +7,8 @@ int main(int argc, char * argv[]) {
     EcbCipherMode ecb;
     FakeCipher cipher(4);
     ecb.encryptStream(std::cin, std::cout, cipher);
-    
+
+    cipher.outputStats(std::cerr);
+
     return 0;
 }

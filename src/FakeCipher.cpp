@@ -9,7 +9,8 @@
 
 FakeCipher::FakeCipher(std::size_t blockSize) :
     mBlockSize(blockSize),
-    mDictionary() {
+    mDictionary(),
+    mTotalBlocks(0) {
 }
 
 FakeCipher::~FakeCipher() {
@@ -23,6 +24,7 @@ std::size_t FakeCipher::initialize() {
 }
 
 CharBlock FakeCipher::encrypt(const CharBlock& block) {
+    mTotalBlocks++;
     auto storedBlock = mDictionary.find(block);
     if (storedBlock != mDictionary.end()) {
         return storedBlock->second;
@@ -38,3 +40,7 @@ CharBlock FakeCipher::encrypt(const CharBlock& block) {
     return outputBlock;
 }
 
+void FakeCipher::outputStats(std::ostream& out) {
+    out << "Processed " << mTotalBlocks
+        << " Blocks (" << mDictionary.size() << " unique)";
+}
