@@ -1,5 +1,5 @@
-#ifndef _FakeCrypto_hpp_
-#define _FakeCrypto_hpp_
+#ifndef _EcbCipherMode_hpp_
+#define _EcbCipherMode_hpp_
 
 #include <Block.hpp>
 
@@ -7,10 +7,10 @@
 #include <ostream>
 #include <map>
 
-class FakeCrypto {
+class EcbCipherMode {
 public:
-    FakeCrypto(const std::size_t& blockSize);
-    virtual ~FakeCrypto();
+    EcbCipherMode(const std::size_t& blockSize);
+    virtual ~EcbCipherMode();
 
     void encryptStream(std::istream& in, std::ostream& out);
 private:
@@ -20,4 +20,4 @@ private:
     CharBlock findOrEncryptBlock(const CharBlock& block);
 };
 
-#endif // _FakeCrypto_hpp_
+#endif // _EcbCipherMode_hpp_

@@ -1,4 +1,4 @@
-#include <FakeCrypto.hpp>
+#include <EcbCipherMode.hpp>
 
 #include <algorithm>
 #include <memory>
@@ -7,15 +7,15 @@
 #include <cstdlib>
 #include <ctime>
 
-FakeCrypto::FakeCrypto(const std::size_t& blockSize) :
+EcbCipherMode::EcbCipherMode(const std::size_t& blockSize) :
     mBlockSize(blockSize),
     mDictionary() {
 }
 
-FakeCrypto::~FakeCrypto() {
+EcbCipherMode::~EcbCipherMode() {
 }
 
-void FakeCrypto::encryptStream(std::istream& in, std::ostream& out) {
+void EcbCipherMode::encryptStream(std::istream& in, std::ostream& out) {
     std::time_t seed;
     time(&seed);
     srand(seed);
@@ -32,7 +32,7 @@ void FakeCrypto::encryptStream(std::istream& in, std::ostream& out) {
     }
 }
 
-CharBlock FakeCrypto::findOrEncryptBlock(const CharBlock& block) {
+CharBlock EcbCipherMode::findOrEncryptBlock(const CharBlock& block) {
     auto storedBlock = mDictionary.find(block);
     if (storedBlock != mDictionary.end()) {
         return storedBlock->second;
