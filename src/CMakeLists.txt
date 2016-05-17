@@ -8,12 +8,16 @@ endif()
 
 set(HEADERS
     Block.hpp
+    BlockCipher.hpp
     EcbCipherMode.hpp
+    FakeCipher.hpp
 )
 
 set(SOURCES
     Block.cpp
+    BlockCipher.cpp
     EcbCipherMode.cpp
+    FakeCipher.cpp
 )
 
 add_library(crypto

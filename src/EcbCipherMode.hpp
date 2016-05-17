@@ -2,6 +2,7 @@
 #define _EcbCipherMode_hpp_
 
 #include <Block.hpp>
+#include <BlockCipher.hpp>
 
 #include <istream>
 #include <ostream>
@@ -9,15 +10,12 @@
 
 class EcbCipherMode {
 public:
-    EcbCipherMode(const std::size_t& blockSize);
+    EcbCipherMode();
     virtual ~EcbCipherMode();
 
-    void encryptStream(std::istream& in, std::ostream& out);
+    void encryptStream(std::istream& in, std::ostream& out, BlockCipher& cipher);
+
 private:
-    const std::size_t mBlockSize;
-    
-    std::map<CharBlock, CharBlock> mDictionary;
-    CharBlock findOrEncryptBlock(const CharBlock& block);
 };
 
 #endif // _EcbCipherMode_hpp_

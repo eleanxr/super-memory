@@ -7,44 +7,23 @@
 #include <cstdlib>
 #include <ctime>
 
-EcbCipherMode::EcbCipherMode(const std::size_t& blockSize) :
-    mBlockSize(blockSize),
-    mDictionary() {
+EcbCipherMode::EcbCipherMode() {
 }
 
 EcbCipherMode::~EcbCipherMode() {
 }
 
-void EcbCipherMode::encryptStream(std::istream& in, std::ostream& out) {
-    std::time_t seed;
-    time(&seed);
-    srand(seed);
-
-    std::unique_ptr<char[]> inputBuffer(new char[mBlockSize]);
+void EcbCipherMode::encryptStream(std::istream& in, std::ostream& out, BlockCipher& cipher) {
+    std::size_t blockSize = cipher.initialize();
+    std::unique_ptr<char[]> inputBuffer(new char[blockSize]);
     while (in) {
-        in.read(inputBuffer.get(), mBlockSize);
+        in.read(inputBuffer.get(), blockSize);
         if (in.eof()) {
             // handle end of stream before block boundary.
         }
-        CharBlock inputBlock(mBlockSize, inputBuffer.get());
-        CharBlock outputBlock = findOrEncryptBlock(inputBlock);
+        CharBlock inputBlock(blockSize, inputBuffer.get());
+        CharBlock outputBlock = cipher.encrypt(inputBlock);
         out.write(&outputBlock.bytes()[0], outputBlock.size());
     }
 }
 
-CharBlock EcbCipherMode::findOrEncryptBlock(const CharBlock& block) {
-    auto storedBlock = mDictionary.find(block);
-    if (storedBlock != mDictionary.end()) {
-        return storedBlock->second;
-    }
-
-    // The block is not stored. "Encrypt" it and save it for later.
-    std::unique_ptr<char[]> buffer(new char[block.size()]);
-    std::transform(
-        block.bytes().begin(), block.bytes().end(),
-        buffer.get(),
-        [](char _){ return static_cast<char>(rand()); });
-    CharBlock outputBlock(mBlockSize, buffer.get());
-    mDictionary.insert(std::make_pair(block, outputBlock));
-    return outputBlock;
-}
